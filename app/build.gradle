@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+
+def VUFORIA_SDK_DIR = '/Users/daemontus/Library/Vuforia'
+def NATIVE_LIB_DIR = 'build/lib'
+def JAR_DIR = 'build/java/vuforia'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+
+    sourceSets.main {
+        jni.srcDirs = []
+        jniLibs.srcDirs = ["$VUFORIA_SDK_DIR/$NATIVE_LIB_DIR/", "lib/"]
+    }
+
+    defaultConfig {
+        applicationId "com.github.daemontus.renderer"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+
+    archivesBaseName = rootProject.projectDir.getName()
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
+        }
+    }
+}
+
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+ext {
+    gdxVersion = '1.9.3'
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.+'
+
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+}
